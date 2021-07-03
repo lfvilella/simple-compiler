@@ -10,6 +10,14 @@ class Token:
 
 
 class SimpleLexer:
+    DATA_TYPES = {
+        '+': Token(choices.TokenTypeEnum.SUM),
+        '-': Token(choices.TokenTypeEnum.SUB),
+        '/': Token(choices.TokenTypeEnum.DIV),
+        '*': Token(choices.TokenTypeEnum.MULTI),
+        'EOF': Token(choices.TokenTypeEnum.EOF),
+    }
+
     def __init__(self, input: str):
         self.input = self._clear_spaces(input)
         self.position = -1
@@ -21,7 +29,7 @@ class SimpleLexer:
         self.position += 1
 
         if self.position == len(self.input):
-            return ''
+            return 'EOF'
 
         return self.input[self.position]
 
@@ -36,11 +44,4 @@ class SimpleLexer:
             self.position -= 1
             return Token(choices.TokenTypeEnum.NUMBER, int(value))
 
-        if peek == '+':
-            return Token(choices.TokenTypeEnum.SUM)
-        elif peek == '-':
-            return Token(choices.TokenTypeEnum.SUB)
-        elif peek == '':
-            return Token(choices.TokenTypeEnum.EOF)
-
-        return Token(choices.TokenTypeEnum.INVALID)
+        return self.DATA_TYPES.get(peek, Token(choices.TokenTypeEnum.INVALID))

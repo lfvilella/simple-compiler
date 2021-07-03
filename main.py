@@ -3,9 +3,7 @@ import simple_parser
 
 
 def main():
-    lexer = simple_lexer.SimpleLexer(
-        '200 + 200 - 500 + 100 - 200 - 400 - 200 + 1100'
-    )
+    lexer = simple_lexer.SimpleLexer('2 + 4 / 2')
     parser = simple_parser.SimpleParser(lexer)
     print(parser.expression())
 

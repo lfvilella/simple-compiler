@@ -32,10 +32,15 @@ class SimpleParser:
         term = self.term()
         while self._look_ahead.type != choices.TokenTypeEnum.EOF:
             operation, value = self.rest()
+
             if operation == choices.OperationEnum.SUM:
                 term += value
             elif operation == choices.OperationEnum.SUB:
                 term -= value
+            elif operation == choices.OperationEnum.DIV:
+                term /= value
+            elif operation == choices.OperationEnum.MULTI:
+                term *= value
 
         return term
 
@@ -49,6 +54,16 @@ class SimpleParser:
             self._match(self._look_ahead)
             term = self.term()
             return choices.OperationEnum.SUB, term
+
+        elif self._look_ahead.type == choices.TokenTypeEnum.DIV:
+            self._match(self._look_ahead)
+            term = self.term()
+            return choices.OperationEnum.DIV, term
+
+        elif self._look_ahead.type == choices.TokenTypeEnum.MULTI:
+            self._match(self._look_ahead)
+            term = self.term()
+            return choices.OperationEnum.MULTI, term
 
         elif self._look_ahead.type == choices.TokenTypeEnum.EOF:
             return choices.TokenTypeEnum.EOF
