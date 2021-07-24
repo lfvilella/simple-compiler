@@ -15,6 +15,10 @@ class SimpleLexer:
         '-': Token(choices.TokenTypeEnum.SUB),
         '/': Token(choices.TokenTypeEnum.DIV),
         '*': Token(choices.TokenTypeEnum.MULTI),
+        '=': Token(choices.TokenTypeEnum.ATTR),
+        '(': Token(choices.TokenTypeEnum.OPEN_BRACKET),
+        ')': Token(choices.TokenTypeEnum.CLOSE_BRACKET),
+        ';': Token(choices.TokenTypeEnum.EOL),
         'EOF': Token(choices.TokenTypeEnum.EOF),
     }
 
@@ -35,6 +39,25 @@ class SimpleLexer:
 
     def next_token(self) -> Token:
         peek = self._next_char()
+
+        if peek.startswith('$'):
+            variable = ''
+            while peek != '=' and peek != ')':
+                variable += peek
+                peek = self._next_char()
+
+            self.position -= 1
+            return Token(choices.TokenTypeEnum.VAR, variable)
+
+        if peek.startswith('p'):
+            print_ = ''
+            while peek != '(':
+                print_ += peek
+                peek = self._next_char()
+
+            self.position -= 1
+            return Token(choices.TokenTypeEnum.PRINT, print_)
+
         if str.isdigit(peek):
             value = ''
             while str.isdigit(peek):

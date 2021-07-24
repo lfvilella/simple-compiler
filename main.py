@@ -3,9 +3,9 @@ import simple_parser
 
 
 def main():
-    lexer = simple_lexer.SimpleLexer('2 + 4 / 2')
+    lexer = simple_lexer.SimpleLexer('$x = 200 + 200; print($x);')
     parser = simple_parser.SimpleParser(lexer)
-    print(parser.expression())
+    print(parser.prog())
 
 
 if __name__ == '__main__':

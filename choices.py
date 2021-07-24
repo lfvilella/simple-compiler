@@ -17,7 +17,12 @@ class TokenTypeEnum(enum.Enum):
     MULTI = 4
 
     VAR = 5
+    ATTR = 6
 
-    PRINT = 6
+    OPEN_BRACKET = 8
+    CLOSE_BRACKET = 9
+
+    PRINT = 10
+    EOL = 98  # semicolon
     EOF = 99
     INVALID = -1
