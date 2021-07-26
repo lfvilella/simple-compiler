@@ -4,10 +4,14 @@ import simple_parser
 
 def main():
     lexer = simple_lexer.SimpleLexer(
-        '200 + 200 - 500 + 100 - 200 - 400 - 200 + 1100'
+        '$x = (2 - 2) + 2/5;'
+        '$y = 2 * 10 + 1;'
+        '$z = ($x + $y) * 5;'
+        '$p = 3.14 - $z;'
+        'print($p);'
     )
     parser = simple_parser.SimpleParser(lexer)
-    print(parser.expression())
+    parser.prog()
 
 
 if __name__ == '__main__':
