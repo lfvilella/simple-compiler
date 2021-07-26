@@ -11,9 +11,9 @@ Grammar:
     term ::= OPEN expr CLOSE | NUM | VAR
 """
 
-import simple_lexer
-import symbol_table
-import choices
+from . import simple_lexer
+from . import symbol_table
+from . import choices
 
 
 class SimpleParser:

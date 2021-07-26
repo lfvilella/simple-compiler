@@ -1,6 +1,6 @@
 import typing
 
-import choices
+from . import choices
 
 
 class Token:
