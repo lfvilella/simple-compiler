@@ -32,16 +32,6 @@ class SimpleParser:
 
         self._look_ahead = self._lexer.next_token()
 
-    # def term(self) -> int:
-    #     if self._look_ahead.type != choices.TokenTypeEnum.NUMBER:
-    #         raise SyntaxError(
-    #             f'The value `{self._look_ahead.attribute}` is not a number.'
-    #         )
-
-    #     value = self._look_ahead.attribute
-    #     self._match(self._look_ahead)
-    #     return value
-
     def expr(self) -> float:  # expr ::= fact SUM expr | fact SUB expr | fact
         _fact = self.fact()
         if self._look_ahead.type == choices.TokenTypeEnum.SUM:
@@ -107,7 +97,12 @@ class SimpleParser:
 
     def term(self):  # term ::= OPEN expr CLOSE | NUM | VAR
         if self._look_ahead.type == choices.TokenTypeEnum.OPEN_BRACKET:
-            return self.expr()
+            self._match(simple_lexer.Token(choices.TokenTypeEnum.OPEN_BRACKET))
+            _expr = self.expr()
+            self._match(
+                simple_lexer.Token(choices.TokenTypeEnum.CLOSE_BRACKET)
+            )
+            return _expr
 
         elif self._look_ahead.type == choices.TokenTypeEnum.NUMBER:
             value = self._look_ahead.attribute

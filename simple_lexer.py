@@ -42,7 +42,7 @@ class SimpleLexer:
 
         if peek.startswith('$'):
             variable = ''
-            while peek != '=' and peek != ')':
+            while peek not in self.DATA_TYPES.keys():
                 variable += peek
                 peek = self._next_char()
 
@@ -60,11 +60,11 @@ class SimpleLexer:
 
         if str.isdigit(peek):
             value = ''
-            while str.isdigit(peek):
+            while str.isdigit(peek) or peek == '.':
                 value += peek
                 peek = self._next_char()
 
             self.position -= 1
-            return Token(choices.TokenTypeEnum.NUMBER, int(value))
+            return Token(choices.TokenTypeEnum.NUMBER, float(value))
 
         return self.DATA_TYPES.get(peek, Token(choices.TokenTypeEnum.INVALID))
