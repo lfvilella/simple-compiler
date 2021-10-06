@@ -18,6 +18,8 @@ class SimplePredictiveParser:
         self._terminal = set('id')
         self._nonterminal = set(table.PARSING_TABLE.keys())
 
+        self.success_state = False
+
     def _inject_eof(self, content: str) -> str:
         """Inject End Of File
 
@@ -53,7 +55,6 @@ class SimplePredictiveParser:
                 or stack_symbol == '('
                 or stack_symbol == ')'
             ):
-                # breakpoint()
                 self._input.pop(0)
                 if stack_symbol == 'id':
                     self._input.pop(0)
@@ -74,8 +75,6 @@ class SimplePredictiveParser:
             if _derivate == table.EMPTY:
                 stack_symbol = self._stack.pop()
                 continue
-
-            breakpoint()
 
             next_alredy_added = False
             reversed_derivate = list(reversed(_derivate))
@@ -103,6 +102,8 @@ class SimplePredictiveParser:
             #     pass
 
             stack_symbol = self._stack.pop()
+
+        self.success_state = True
 
     def derivative(self, stack_symbol: str, symbol: str):
         _derivate = table.PARSING_TABLE[stack_symbol].get(symbol)
