@@ -17,54 +17,69 @@ T’ –> *FT’/ε | { *, ε }  | { +, $, ) }    |
 F –> id/(E)  | { id, ( } | { *, +, $, ) } |
 
 Parsing Table:
- 	|    id    |     +      |     *	     |     (    |    )    |     $   |
+ 	|    id    |     +      |     *	     |     (    |    )    |     $   |  # noqa: W191, E101, E501
 ----+----------+------------+------------+----------+---------+---------|
-E	| E –> TE’ |	 	 	|            | E –> TE’ |	 	  |         |
+E	| E –> TE’ |   error 	|    error   | E –> TE’ |	sync  |   sync  |
 ----+----------+------------+------------+----------+---------+---------|
-E’	|          | E’ –> +TE’ |            | 	 	 	| E’ –> ε |	E’ –> ε |
+E’	|   error  | E’ –> +TE’ |    error   | 	 error	| E’ –> ε |	E’ –> ε |
 ----+----------+------------+------------+----------+---------+---------|
-T	| T –> FT’ |	 	 	|            | T –> FT’ |	 	  |         |
+T	| T –> FT’ |	sync	|    error   | T –> FT’ |	sync  |   sync  |
 ----+----------+------------+------------+----------+---------+---------|
-T’	|          |  T’ –> ε	| T’ –> *FT’ |	 	    | T’ –> ε |	T’ –> ε |
+T’	|   error  |  T’ –> ε	| T’ –> *FT’ |	 error  | T’ –> ε |	T’ –> ε |
 ----+----------+------------+------------+----------+---------+---------|
-F	| F –> id  | 	 	    |            | F –> (E) |         |         |
+F	| F –> id  | 	 sync   |     sync   | F –> (E) |   sync  |  sync   |
 """
 
 START_SYMBOL = 'E'
 EMPTY = 'empty'  # ε
+EOF = '$'
+
+FATAL_ERROR = 'fatal_error'
+SYNC_ERROR = 'sync'
 
 PARSING_TABLE = {
     START_SYMBOL: {
         'id': "TE'",
-        '+': None,
-        '*': None,
+        '+': FATAL_ERROR,
+        '*': FATAL_ERROR,
         '(': "TE'",
-        ')': None,
-        '$': None,
+        ')': SYNC_ERROR,
+        EOF: SYNC_ERROR,
     },
     "E'": {
-        'id': None,
+        'id': FATAL_ERROR,
         '+': "+TE'",
-        '*': None,
-        '(': None,
+        '*': FATAL_ERROR,
+        '(': FATAL_ERROR,
         ')': EMPTY,
-        '$': EMPTY,
+        EOF: EMPTY,
     },
     'T': {
         'id': "FT'",
-        '+': None,
-        '*': None,
+        '+': SYNC_ERROR,
+        '*': FATAL_ERROR,
         '(': "FT'",
-        ')': None,
-        '$': None,
+        ')': SYNC_ERROR,
+        EOF: SYNC_ERROR,
     },
     "T'": {
-        'id': None,
+        'id': FATAL_ERROR,
         '+': EMPTY,
         '*': "*FT'",
-        '(': None,
+        '(': FATAL_ERROR,
         ')': EMPTY,
-        '$': EMPTY,
+        EOF: EMPTY,
     },
-    'F': {'id': 'id', '+': None, '*': None, '(': '(E)', ')': None, '$': None,},
+    'F': {
+        'id': 'id',
+        '+': SYNC_ERROR,
+        '*': SYNC_ERROR,
+        '(': '(E)',
+        ')': SYNC_ERROR,
+        EOF: SYNC_ERROR,
+    },
 }
+
+
+TERMINAL = set(['id', '+', '*', '(', ')'])
+NONTERMINAL = set(PARSING_TABLE.keys())
