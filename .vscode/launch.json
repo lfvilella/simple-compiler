@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "antlr4-DecisionGrammar",
+            "type": "antlr-debug",
+            "request": "launch",
+            "input": "template_antlr_with_docker/decision_structure/input.txt",
+            "grammar": "template_antlr_with_docker/decision_structure/DecisionGrammar.g4",
+            "startRule": "prog",
+            "printParseTree": true,
+            "visualParseTree": true
+        }
+    ]
+}
