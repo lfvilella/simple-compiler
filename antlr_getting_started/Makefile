@@ -16,10 +16,10 @@ build: delete-container ## Build the container
 ## @docker-compose exec java /bin/bash -c alias grun='java -Xmx500M -cp "/usr/local/lib/antlr-4.9-complete.jar:$CLASSPATH" org.antlr.v4.gui.TestRig'
 
 restart: ## Restart the container
-	@docker-compose restart java
+	@docker-compose restart
 
 cmd: start ## Access bash
-	@docker-compose exec java /bin/bash
+	@docker-compose exec $(app) /bin/bash
 
 start:
 	@docker-compose start
