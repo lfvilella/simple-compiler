@@ -2,3 +2,8 @@ __pycache__/
 *.log
 
 todo*.md
+
+
+**/.antlr
+**/output
+**/venv*
