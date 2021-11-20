@@ -1,0 +1,11 @@
+COMPILER Sample
+CHARACTERS
+digit = '0'..'9'.
+TOKENS
+number = digit {digit}.
+IGNORE '\r' + '\n'
+PRODUCTIONS
+Sample = {"calc" Expr}.
+Expr = Term {'+' Term}.
+Term = number.
+END Sample.
