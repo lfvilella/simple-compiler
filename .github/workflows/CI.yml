@@ -25,7 +25,7 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          flake8 .
+          flake8 . --exclude=antlr_getting_started
 
       - name: Test with pytest
         run: |
