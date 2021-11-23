@@ -7,3 +7,5 @@ todo*.md
 **/.antlr
 **/output
 **/venv*
+
+**/node_modules
